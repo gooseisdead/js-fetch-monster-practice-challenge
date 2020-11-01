@@ -1,52 +1,35 @@
-const monsterContainer = document.querySelector("#monster-container")
 
-function renderOneMonster(monster) {
-    const monsterDiv = document.createElement("div")
-    monsterDiv.className = "monster"
-    monsterDiv.dataset.number = monster.number
-    
+function renderMonster(monster) {
+  const monsterContainer = document.querySelector("#monster-container")
+  const monsterDiv = document.createElement("div")
+  monsterDiv.className = "monster"
+  monsterDiv.dataset.number = monster.number
+  monsterDiv.innerHTML = `
+    <h3>${monster.name}</h3>
+    <p>${monster.age}</p>
+    <p>${monster.description}</p>
+    `
     monsterContainer.append(monsterDiv)
 }
 
-
-
-function renderAllMonsters(manifestMonsterData) {
-    manifestMonsterData.forEach(renderOneMonster)
+function renderAllMonsters(monsterData) {
+    monsterData.forEach(renderMonster)
 }
 
-    fetch("http://localhost:3000/monsters")
+
+
+function initialize () {
+    fetch("http://localhost:3000/monsters/?_limit=50&_page=1")
     .then(response => response.json())
-    .then(data => manifestMonsterData(data))
-
-function manifestMonsterData(data) {
-  data.forEach(renderOneMonster)
-}
-
-
-
-//   function renderPlayer(player) {
-//     const playerDiv = document.createElement("div")
-//     const deletePlayerButton = document.createElement("BUTTON")
-//     deletePlayerButton.innerHTML = "DELETE"
-//     playerDiv.className = "player"
-//     playerDiv.dataset.number = player.number
-//     playerDiv.innerHTML = `
-//       <h3>${player.name} (<em>${player.nickname}</em>)</h3>
-//       <img src="${player.photo}" alt="${player.name}">
-//       <p class="likes">${player.likes} likes</p>
-//       <button class="like-button">❤️</button>
-//       `
-    
-//     const likeButton = playerDiv.querySelector("button.like-button")
-//     likeButton.addEventListener("click", function(event) {
-//       const likes = playerDiv.querySelector("p.likes")
-//       const totalLikes = parseInt(likes.textContent)
-//       likes.textContent = totalLikes + 1 + " likes"
-//     })
+    .then(monsterData => {
+        renderAllMonsters(monsterData)
+    })
+  }
   
-//     playerDiv.append(deletePlayerButton)
-//     playerContainer.append(playerDiv)
-    
-//   }
+  initialize ()
+
+  
+  
+  
   
   
